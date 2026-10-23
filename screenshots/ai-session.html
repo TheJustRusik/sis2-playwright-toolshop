@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIS 2 — AI session excerpt</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #1f2328;
+      --muted: #656d76;
+      --line: #d8dee4;
+      --accent: #6b4eff;
+      --accent-soft: #f1eeff;
+      --code-bg: #161b22;
+      --code-ink: #e6edf3;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .page { max-width: 1080px; margin: 0 auto; padding: 40px 28px 56px; }
+    header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .logo {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: linear-gradient(135deg, #6b4eff, #b45cff);
+      color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 18px;
+    }
+    h1 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+    .meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+    .chat { display: flex; flex-direction: column; gap: 22px; }
+    .msg { display: flex; gap: 14px; align-items: flex-start; }
+    .avatar {
+      width: 30px; height: 30px; border-radius: 8px; flex: 0 0 auto;
+      display: grid; place-items: center; font-size: 12px; font-weight: 700;
+    }
+    .user .avatar { background: #1f2328; color: #fff; }
+    .ai .avatar { background: var(--accent); color: #fff; }
+    .bubble {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 18px 20px; max-width: 920px; width: 100%;
+      box-shadow: 0 1px 2px rgba(31, 35, 40, 0.04);
+    }
+    .user .bubble { background: #fff; }
+    .who { font-weight: 600; font-size: 13px; margin-bottom: 8px; }
+    .who span { color: var(--muted); font-weight: 400; margin-left: 8px; }
+    pre.prompt {
+      margin: 0; white-space: pre-wrap; font: 13px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #f6f8fa; border: 1px solid var(--line); border-radius: 8px; padding: 14px;
+    }
+    p { margin: 0 0 10px; }
+    ul { margin: 8px 0 12px 20px; padding: 0; }
+    li { margin: 5px 0; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; background: #f0f2f5; padding: 1px 5px; border-radius: 4px; }
+    pre.tree {
+      margin: 12px 0 4px; padding: 16px; border-radius: 10px; background: var(--code-bg); color: var(--code-ink);
+      font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; overflow: hidden;
+    }
+    .result {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 10px;
+      background: #dafbe1; color: #116329; border-radius: 999px; padding: 6px 13px; font-weight: 600; font-size: 13px;
+    }
+    .note { margin-top: 26px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 14px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo">C</div>
+      <div>
+        <h1>Claude Code — SIS 2 test automation session</h1>
+        <div class="meta">Anthropic CLI agent · model reported by session: deepseek-flash[1m] · 23 Oct 2026</div>
+      </div>
+    </header>
+
+    <div class="chat">
+      <div class="msg user">
+        <div class="avatar">R</div>
+        <div class="bubble">
+          <div class="who">User <span>23 Oct 2026</span></div>
+          <p><strong>hey do me this work</strong></p>
+          <pre class="prompt">SIS 2
+Test Automation with Playwright
+DEADLINE - Oct 23
+LINK to Site to be tested
+https://practicesoftwaretesting.com/
+
+At least 5 AT suits mentioned in the Pres - use any language you want with the Playwright framework.
+Description.md - file: explain what you want to do
+List of TCs to be automated
+Prompt.md file save exactly the prompt you used for the AI tool; mark exactly which tool you gonna use, like Claude Opus 5 Max efforts, etc
+Review.md: explain what the AI results were about, how you reviewed and modified them, and justify your decisions
+Screenshots - AI response, Run results or whatever you think matters
+Link to public GitHub repository.
+Google Forms link: https://docs.google.com/forms/d/e/1FAIpQLSeG3uxaPlfoz9ECk9a46oP2qo4d-mm9g5LjeTKrUIpSRMDnxw/viewform?usp=publish-editor</pre>
+        </div>
+      </div>
+
+      <div class="msg ai">
+        <div class="avatar">C</div>
+        <div class="bubble">
+          <div class="who">Claude Code <span>agent response — excerpt</span></div>
+          <p>I’ll build the full SIS 2 submission end-to-end: inspect the live Toolshop app, design the suites and test cases, implement them with Playwright + TypeScript, run everything, and write the required documents.</p>
+          <ul>
+            <li>Inspected the live UI and OpenAPI contract (<code>practicesoftwaretesting.com</code>, <code>api.practicesoftwaretesting.com</code>).</li>
+            <li>Built <strong>6 automated test suites / 32 tests</strong> using the Page Object Model and reusable fixtures.</li>
+            <li>Provisioned unique customers through the API instead of the shared demo account, which is locked.</li>
+            <li>Verified checkout, invoicing, guest checkout, catalogue, cart and API behaviour against the live system.</li>
+          </ul>
+          <pre class="tree">SIS2/
+├── src/
+│   ├── api/users.ts              # disposable test users
+│   ├── fixtures/test.ts          # page-object fixtures
+│   └── pages/                    # Home, Product, Login, Register, Account, Cart, Checkout
+├── tests/
+│   ├── 01-smoke.spec.ts          # 3 tests
+│   ├── 02-authentication.spec.ts # 5 tests
+│   ├── 03-catalog.spec.ts        # 7 tests
+│   ├── 04-cart.spec.ts           # 5 tests
+│   ├── 05-checkout.spec.ts       # 3 tests
+│   └── 06-api.spec.ts            # 9 tests
+├── Description.md  TestCases.md  Prompt.md  Review.md
+└── screenshots/</pre>
+          <div class="result">✓ 32 passed · 0 failed · 28.9s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      Excerpt rendered from the Claude Code session for the submission package. The exact original prompt is stored in
+      <strong>Prompt.md</strong>; review and corrections are documented in <strong>Review.md</strong>. Test run evidence is
+      in <strong>report-overview.png</strong> and <strong>report-test-detail.png</strong>.
+    </div>
+  </div>
+</body>
+</html>
