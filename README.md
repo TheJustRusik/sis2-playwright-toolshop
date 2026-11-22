@@ -59,6 +59,39 @@ npm run test:api
 npx playwright test -g "TC-CHK-01"
 ```
 
+## CI
+
+[![Playwright Tests](https://github.com/TheJustRusik/sis2-playwright-toolshop/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/TheJustRusik/sis2-playwright-toolshop/actions/workflows/playwright.yml)
+
+**CI system:** GitHub Actions. The repository is already on GitHub, public repos get free runner minutes, there is no separate CI server to maintain, and `strategy.matrix` handles sharding out of the box.
+
+**Pipeline** (`.github/workflows/playwright.yml`):
+- triggers on every `push` and `pull_request` (no branch filter), plus `workflow_dispatch` for manual runs;
+- installs dependencies with `npm ci` (using `setup-node` `cache: npm`) and installs Chromium with `npx playwright install --with-deps chromium`;
+- starts the Toolshop app locally inside the runner via `docker-compose.ci.yml` (`http://localhost:4200` and `http://localhost:8091`), because requests from GitHub Actions IPs hit a Cloudflare bot verification page on `practicesoftwaretesting.com`;
+- runs the full Playwright suite in 4 parallel shards (`--shard=i/4`, no test filters);
+- merges shard blobs in the `merge-reports` job using `merge.config.ts` into one HTML report and one JUnit XML file;
+- uploads `playwright-report`, `test-results-1`..`4` (traces, screenshots, videos, per-shard JUnit) and `junit-report`, kept for 14 days.
+
+**CI config** (`playwright.config.ts`, enabled when `CI` is set): `forbidOnly: true`, `retries: 2`, `workers: 2`, `list` + `blob` + `junit` (`reports/junit.xml`) reporters, and `trace: 'on-first-retry'`.
+
+### Runtime
+
+| Configuration | Total run time | Run tests step (slowest shard) | Run |
+| --- | --- | --- | --- |
+| 1 job, no sharding | 1 min 47 s | 24 s | [run](https://github.com/TheJustRusik/sis2-playwright-toolshop/actions/runs/45055085135) |
+| 4 shards + merge | 1 min 56 s | 13 s | [run](https://github.com/TheJustRusik/sis2-playwright-toolshop/actions/runs/45053161000) |
+
+Numbers are the median of 3 manual `workflow_dispatch` runs each. Splitting across 4 shards cut the test execution step almost in half (24 s to 13 s), though total workflow time was 9 s longer because each shard spends about a minute on setup and starting the Docker containers, plus ~15 s for `merge-reports`. Sharding will save real wall-clock time as the suite grows past a few minutes.
+
+### Running in CI mode locally
+
+```bash
+npm ci
+npx playwright install --with-deps chromium
+CI=true npx playwright test
+```
+
 ## What is covered
 
 - **Smoke:** home catalogue, product details, category navigation.
@@ -82,7 +115,10 @@ npx playwright test -g "TC-CHK-01"
 
 ```
 SIS2/
+├── .github/workflows/playwright.yml
 ├── playwright.config.ts
+├── merge.config.ts
+├── docker-compose.ci.yml
 ├── tsconfig.json
 ├── package.json
 ├── src/
