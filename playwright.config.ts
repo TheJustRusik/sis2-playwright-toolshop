@@ -7,30 +7,37 @@ import { defineConfig, devices } from '@playwright/test';
  * `npx playwright install chromium`.
  */
 const channel = process.env.PLAYWRIGHT_CHANNEL;
+const isCI = !!process.env.CI;
 
-const UI_BASE_URL = 'https://practicesoftwaretesting.com';
-const API_BASE_URL = 'https://api.practicesoftwaretesting.com';
+const UI_BASE_URL = process.env.BASE_URL || 'https://practicesoftwaretesting.com';
+const API_BASE_URL = process.env.API_BASE_URL || 'https://api.practicesoftwaretesting.com';
 
 export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: 1,
-  workers: process.env.CI ? 2 : 3,
-  reporter: [
-    ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ['json', { outputFile: 'test-results/results.json' }],
-  ],
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  workers: isCI ? 2 : 3,
+  reporter: isCI
+    ? [
+        ['list'],
+        ['blob'],
+        ['junit', { outputFile: 'reports/junit.xml' }],
+      ]
+    : [
+        ['list'],
+        ['html', { outputFolder: 'playwright-report', open: 'never' }],
+        ['json', { outputFile: 'test-results/results.json' }],
+      ],
   use: {
     headless: true,
     actionTimeout: 15_000,
     navigationTimeout: 30_000,
-    trace: 'retain-on-failure',
+    trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'off',
+    video: 'retain-on-failure',
     testIdAttribute: 'data-test',
   },
   projects: [
