@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://api.practicesoftwaretesting.com';
+export const API_BASE_URL = process.env.API_BASE_URL || 'https://api.practicesoftwaretesting.com';
 
 /** Password that satisfies the demo app's strength + breach checks. */
 export const DEFAULT_PASSWORD = 'Sis2!Playwright#2026';
